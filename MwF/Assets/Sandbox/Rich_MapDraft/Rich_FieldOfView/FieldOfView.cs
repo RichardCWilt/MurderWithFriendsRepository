@@ -5,14 +5,22 @@ using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
 {
-
+    [SerializeField] private LayerMask layerMask;
+    private Mesh mesh;
+    private float fov;
+    private Vector3 origin;
+    private float startingAngle;
+    
     private void Start()
     {
-        Mesh mesh = new Mesh();
+        mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
+        fov = 90f;
+        origin = Vector3.zero;
+    }
 
-        float fov = 90f;
-        Vector3 origin = Vector3.zero;
+    private void Update()
+    {
         int rayCount = 50;
         float angle = 0f;
         float angleIncrease = fov / rayCount;
@@ -30,7 +38,7 @@ public class FieldOfView : MonoBehaviour
         for (int i = 0; i <= rayCount; i++)
         {
             Vector3 vertex;
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin, UtilityScript.GetVectorFromAngle(angle), viewDistance);
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(origin, UtilityScript.GetVectorFromAngle(angle), viewDistance, layerMask);
             if (raycastHit2D.collider == null)
             {
                 //No hit
@@ -58,5 +66,15 @@ public class FieldOfView : MonoBehaviour
         mesh.vertices = vertices;
         mesh.uv = uv;
         mesh.triangles = triangles;
+    }
+
+    public void SetOrigin(Vector3 origin)
+    {
+        this.origin = origin;
+    }
+
+    public void SetAimDirection(Vector3 aimDirection)
+    {
+        startingAngle = UtilityScript.GetAngleFromVectorFloat(aimDirection) - fov / 2f;
     }
 }
