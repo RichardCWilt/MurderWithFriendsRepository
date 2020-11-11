@@ -9,8 +9,15 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        // grid = new Grid<bool>(20 , 10, 1f, Vector3.zero);
+        Pathfinding pathfinding = new Pathfinding(10, 10);
     }
+
+
+
+
+
+
+
 
    /* private void Update()
     {
