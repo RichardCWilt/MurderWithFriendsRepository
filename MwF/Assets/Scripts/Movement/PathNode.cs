@@ -8,6 +8,9 @@ public class PathNode
     private int x;
     private int y;
 
+    public int X { get { return x; } }
+    public int Y { get { return y; } }
+
     public int gCost;
     public int hCost;
     public int fCost;
@@ -19,6 +22,11 @@ public class PathNode
         this.grid = grid;
         this.x = x;
         this.y = y;
+    }
+
+    public void CalculateFCost()
+    {
+        fCost = gCost + hCost;
     }
 
     public override string ToString()
