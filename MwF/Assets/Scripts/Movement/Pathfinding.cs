@@ -15,7 +15,12 @@ public class Pathfinding
         grid = new Grid<PathNode>(width, height, 1, Vector3.zero, (Grid<PathNode> g, int x, int y) => new PathNode(g,x,y));
     }
 
-    private List<PathNode> FindPath(int startX, int startY, int endX, int endY)
+    public Grid<PathNode> GetGrid()
+    {
+        return grid;
+    }
+
+    public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
     {
         PathNode startNode = grid.GetGridObject(startX, startY);
         PathNode endNode = grid.GetGridObject(endX, endY);
@@ -50,8 +55,28 @@ public class Pathfinding
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
+            foreach (PathNode neighborNode in GetNeighborList(currentNode))
+            {
+                if (closedList.Contains(neighborNode)) continue;
 
+                int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighborNode);
+                if (tentativeGCost < neighborNode.gCost)
+                {
+                    neighborNode.cameFromNode = currentNode;
+                    neighborNode.gCost = tentativeGCost;
+                    neighborNode.hCost = CalculateDistanceCost(neighborNode, endNode);
+                    neighborNode.CalculateFCost();
+
+                    if (!openList.Contains(neighborNode))
+                    {
+                        openList.Add(neighborNode);
+                    }
+                }
+            }
         }
+
+        // Out of nodes on the openList
+        return null;
     }
 
     private List<PathNode> GetNeighborList(PathNode currentNode)
@@ -91,7 +116,16 @@ public class Pathfinding
 
     private List<PathNode> CalculatePath(PathNode endNode)
     {
-        return null;
+        List<PathNode> path = new List<PathNode>();
+        path.Add(endNode);
+        PathNode currentNode = endNode;
+        while (currentNode.cameFromNode != null)
+        {
+            path.Add(currentNode.cameFromNode);
+            currentNode = currentNode.cameFromNode;
+        }
+        path.Reverse();
+        return path;
     }
 
     private int CalculateDistanceCost(PathNode a, PathNode b)

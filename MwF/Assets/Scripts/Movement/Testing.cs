@@ -5,14 +5,31 @@ using UnityEngine.Lumin;
 
 public class Testing : MonoBehaviour
 {
-    private Grid<bool> grid;
+    // private Grid<bool> grid;
+    private Pathfinding pathfinding;
 
     private void Start()
     {
-        Pathfinding pathfinding = new Pathfinding(10, 10);
+        pathfinding = new Pathfinding(10, 10);
     }
 
-
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            pathfinding.GetGrid().GetXY(worldPosition, out int x, out int y);
+            List<PathNode> path = pathfinding.FindPath(0, 0, x, y);
+            if (path != null)
+            {
+                for (int i=0; i<path.Count - 1; i++)
+                {
+                    print(worldPosition);
+                    Debug.DrawLine(new Vector3(path[i].X, path[i].Y) + Vector3.one * 0.5f , new Vector3(path[i + 1].X, path[i + 1].Y)  + Vector3.one * 0.5f , Color.green, 5f);
+                }
+            }
+        }
+    }
 
 
 
