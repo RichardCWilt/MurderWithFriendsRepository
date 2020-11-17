@@ -10,7 +10,7 @@ public class Testing : MonoBehaviour
 
     private void Start()
     {
-        pathfinding = new Pathfinding(10, 10);
+        pathfinding = new Pathfinding(10, 10, Vector3.zero);
     }
 
     private void Update()
