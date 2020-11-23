@@ -23,12 +23,28 @@ public class Pathfinding
         return grid;
     }
 
+    public void RaycastWalkable()
+    {
+        for (int i = 0; i < grid.GetWidth(); i++)
+        {
+            for (int j = 0; j < grid.GetHeight(); j++)
+            {
+                Vector3 nodeWorldPosition = grid.GetWorldPosition(i, j);
+                RaycastHit2D raycastHit = Physics2D.Raycast(nodeWorldPosition + new Vector3(grid.GetCellSize(), grid.GetCellSize()) * 0.5f, Vector2.zero, 0f);
+                if (raycastHit.collider != null)
+                {
+                    grid.GetGridObject(i, j).SetIsWalkable(false);
+                }
+            }
+        }
+    }
+
     public List<Vector3> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition)
     {
         grid.GetXY(startWorldPosition, out int startX, out int startY);
         grid.GetXY(endWorldPosition, out int endX, out int endY);
 
-        Debug.Log("Start XY: " + startX + ", " + startY + " End XY: " + endX + ", " + endY);
+        //Debug.Log("Start XY: " + startX + ", " + startY + " End XY: " + endX + ", " + endY);
 
         List<PathNode> path = FindPath(startX, startY, endX, endY);
         if (path == null)
@@ -42,10 +58,10 @@ public class Pathfinding
             {
                 vectorPath.Add(grid.GetWorldPosition(pathNode.X, pathNode.Y) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() * 0.5f);
             }
-            for (int i = 0; i < vectorPath.Count; i++)
+            /*for (int i = 0; i < vectorPath.Count; i++)
             {
                 Debug.Log("Node " + i + " XY (world pos): " + vectorPath[i].x + ", " + vectorPath[i].y);
-            }
+            }*/
             return vectorPath;
         }
     }

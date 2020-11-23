@@ -25,7 +25,9 @@ public class Testing : MonoBehaviour
             Vector3 mouseClickWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pathfinding.GetGrid().GetXY(mouseClickWorldPosition, out int x, out int y);
             pathfinding.GetGrid().GetXY(playerMovement.GetPosition(), out int playerX, out int playerY);
-            print("Player Grid XY: " + playerX + ", " + playerY + " Mouse Grid XY: " + x + ", " + y);
+            print("Click is Walkable: " + pathfinding.GetGrid().GetGridObject(x, y).isWalkable);
+            
+            //print("Player Grid XY: " + playerX + ", " + playerY + " Mouse Grid XY: " + x + ", " + y);
 
             playerMovement.SetTargetPosition(mouseClickWorldPosition);
         }

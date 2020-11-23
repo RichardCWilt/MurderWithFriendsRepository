@@ -19,6 +19,7 @@ public class MovementGrid : MonoBehaviour
         print("Height: " + walkableHeight + " Width: " + walkableWidth);
 
         pathfinding = new Pathfinding(walkableWidth, walkableHeight , walkableTileMap.origin);
+        pathfinding.RaycastWalkable();
     }
 
     // Update is called once per frame
