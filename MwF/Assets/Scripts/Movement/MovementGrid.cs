@@ -10,7 +10,7 @@ public class MovementGrid : MonoBehaviour
     
     private Pathfinding pathfinding;
 
-    void Start()
+    void Awake()
     {
         Vector3 walkableTileTopRight = walkableTileMap.origin + walkableTileMap.size;
         int walkableHeight = Mathf.RoundToInt(walkableTileTopRight.y - walkableTileMap.origin.y);

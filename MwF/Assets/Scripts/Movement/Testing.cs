@@ -8,43 +8,58 @@ public class Testing : MonoBehaviour
     // private Grid<bool> grid;
     private Pathfinding pathfinding;
 
+    public GameObject playerPrefab;
+
+    private PlayerMovement playerMovement;
+
     private void Start()
     {
-        pathfinding = new Pathfinding(10, 10, Vector3.zero);
+        pathfinding = Pathfinding.Instance;
+        playerMovement = playerPrefab.GetComponent<PlayerMovement>();
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            pathfinding.GetGrid().GetXY(worldPosition, out int x, out int y);
-            List<PathNode> path = pathfinding.FindPath(0, 0, x, y);
-            if (path != null)
-            {
-                for (int i=0; i<path.Count - 1; i++)
-                {
-                    print(worldPosition);
-                    Debug.DrawLine(new Vector3(path[i].X, path[i].Y) + Vector3.one * 0.5f , new Vector3(path[i + 1].X, path[i + 1].Y)  + Vector3.one * 0.5f , Color.green, 5f);
-                }
-            }
+            Vector3 mouseClickWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            pathfinding.GetGrid().GetXY(mouseClickWorldPosition, out int x, out int y);
+            pathfinding.GetGrid().GetXY(playerMovement.GetPosition(), out int playerX, out int playerY);
+            print("Player Grid XY: " + playerX + ", " + playerY + " Mouse Grid XY: " + x + ", " + y);
+
+            playerMovement.SetTargetPosition(mouseClickWorldPosition);
         }
     }
 
-
-
-
-
-
-   /* private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+    // Was used for testing with drawing a lint
+    /*    private void Update()
         {
-            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            int value = grid.GetValue(worldPosition);
-            grid.SetValue(worldPosition, value + 5);
-        }
-    }*/
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                pathfinding.GetGrid().GetXY(worldPosition, out int x, out int y);
+                List<PathNode> path = pathfinding.FindPath(0, 0, x, y);
+                if (path != null)
+                {
+                    for (int i=0; i<path.Count - 1; i++)
+                    {
+                        print(worldPosition);
+                        Debug.DrawLine(new Vector3(path[i].X, path[i].Y) + Vector3.one * 0.5f , new Vector3(path[i + 1].X, path[i + 1].Y)  + Vector3.one * 0.5f , Color.green, 5f);
+                    }
+                }
+            }
+        }*/
+
+
+    /* private void Update()
+     {
+         if (Input.GetMouseButtonDown(0))
+         {
+             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+             int value = grid.GetValue(worldPosition);
+             grid.SetValue(worldPosition, value + 5);
+         }
+     }*/
 
 
 
